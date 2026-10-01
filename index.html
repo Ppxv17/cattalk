@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#17141f" />
+  <title>CatTalk — สื่อสารกับแมว</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    :root{--bg:#111018;--card:#1b1824;--soft:#262131;--text:#fffaf3;--muted:#bdb5c9;--accent:#ffd166;--accent2:#ef8fb1;--ok:#86e3ce;--danger:#ff8a8a}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#111018,#191421);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+    .wrap{max-width:760px;margin:auto;padding:22px 16px 60px}.hero{padding:26px 8px 14px;text-align:center}.cat{font-size:68px;filter:drop-shadow(0 8px 16px #0006)}
+    h1{margin:4px 0 4px;font-size:32px}.sub{color:var(--muted);margin:0 auto;max-width:560px;line-height:1.55}
+    .notice{margin:18px 0;padding:12px 14px;background:#2a2232;border:1px solid #4a3b56;border-radius:16px;color:#e8dff0;font-size:14px;line-height:1.5}
+    .tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#17141f;padding:6px;border-radius:18px;position:sticky;top:8px;z-index:2}
+    .tab{border:0;border-radius:14px;padding:13px 10px;background:transparent;color:var(--muted);font-weight:700;font-size:15px}.tab.active{background:var(--accent);color:#2a2110}
+    .panel{display:none;margin-top:14px}.panel.active{display:block}.card{background:var(--card);border:1px solid #2d2838;border-radius:22px;padding:18px;margin:12px 0;box-shadow:0 14px 30px #0003}
+    .card h2{margin:0 0 7px;font-size:21px}.hint{color:var(--muted);font-size:14px;line-height:1.5;margin:0 0 14px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .intent{border:1px solid #3a3345;background:var(--soft);color:var(--text);border-radius:18px;padding:16px 12px;text-align:left;min-height:88px}.intent:active{transform:scale(.98)}
+    .intent b{display:block;font-size:17px;margin-bottom:4px}.intent span{color:var(--muted);font-size:13px}
+    .big{width:100%;border:0;border-radius:20px;padding:18px;background:var(--accent2);color:#2b1420;font-weight:800;font-size:18px}.big.listening{background:var(--danger)}
+    .status{margin-top:13px;padding:14px;border-radius:16px;background:#14111b;color:#ddd5e5;min-height:52px}.meter{height:10px;background:#0f0d14;border-radius:999px;overflow:hidden;margin:13px 0}
+    .meter>div{height:100%;width:0%;background:linear-gradient(90deg,var(--ok),var(--accent),var(--accent2));transition:width .08s linear}
+    .result{display:none;margin-top:14px;padding:18px;border-radius:18px;background:#211b2a;border:1px solid #3b3048}.result.show{display:block}.result .emoji{font-size:38px}.result h3{margin:6px 0}
+    .score{color:var(--accent);font-weight:800}.mini{font-size:12px;color:#9f96ad;line-height:1.45}footer{text-align:center;color:#847b91;font-size:12px;margin-top:26px}
+    @media (max-width:460px){.grid{grid-template-columns:1fr}.wrap{padding-top:12px}.cat{font-size:58px}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero"><div class="cat">🐱</div><h1>CatTalk</h1><p class="sub">ต้นแบบแอปช่วย “สื่อสารกับแมว” แบบไม่อ้างว่าแปลภาษาแมวได้จริง</p></div>
+  <div class="notice">CatTalk ใช้รูปแบบเสียงและพฤติกรรมทั่วไปเพื่อช่วยสังเกตเท่านั้น ไม่ใช่เครื่องแปลภาษาแมว และไม่ควรใช้แทนคำแนะนำจากสัตวแพทย์เมื่อแมวมีอาการผิดปกติ</div>
+  <div class="tabs"><button class="tab active" data-target="human">ฉัน → แมว</button><button class="tab" data-target="cat">แมว → ฉัน</button></div>
+  <section id="human" class="panel active">
+    <div class="card">
+      <h2>เลือกสิ่งที่อยากสื่อ</h2><p class="hint">แตะหนึ่งครั้ง แอปจะสร้างเสียงสั้น ๆ ที่นุ่มและไม่ดังเกินไป เพื่อใช้เป็นสัญญาณซ้ำ ๆ กับแมวของคุณ</p>
+      <div class="grid">
+        <button class="intent" onclick="playCatSignal('hello')"><b>👋 สวัสดี</b><span>เสียงสั้น นุ่ม เป็นมิตร</span></button>
+        <button class="intent" onclick="playCatSignal('come')"><b>🐾 มาหาหน่อย</b><span>เสียงเรียก 2 ครั้งต่อเนื่อง</span></button>
+        <button class="intent" onclick="playCatSignal('play')"><b>🧶 มาเล่นกัน</b><span>เสียงสั้นสูงขึ้นเล็กน้อย</span></button>
+        <button class="intent" onclick="playCatSignal('calm')"><b>💗 ไม่เป็นไรนะ</b><span>เสียงต่ำ นุ่ม และช้ากว่า</span></button>
+      </div>
+      <div id="humanStatus" class="status">พร้อมแล้ว — เลือกสัญญาณด้านบน</div>
+    </div>
+    <div class="card"><h2>เคล็ดลับให้แมวเรียนรู้</h2><p class="hint">ใช้เสียงเดิมกับความหมายเดิมทุกครั้ง และจับคู่กับสิ่งที่แมวเห็นจริง เช่น กด “มาเล่นกัน” ก่อนหยิบของเล่น วิธีนี้มีโอกาสทำให้แมวเรียนรู้สัญญาณได้ดีกว่าการสุ่มเสียงเหมียวหลายแบบ</p></div>
+  </section>
+  <section id="cat" class="panel">
+    <div class="card">
+      <h2>ฟังเสียงแมว 3 วินาที</h2><p class="hint">แอปจะดู “ความดัง + ระดับความถี่โดยประมาณ + ความต่อเนื่อง” แล้วให้คำอธิบายแบบคร่าว ๆ เท่านั้น</p>
+      <button id="listenBtn" class="big">🎙️ ฟังเสียงแมว</button><div class="meter"><div id="meterFill"></div></div><div id="catStatus" class="status">กดปุ่ม แล้วอนุญาตใช้ไมโครโฟน</div>
+      <div id="result" class="result"><div id="resultEmoji" class="emoji">🐱</div><h3 id="resultTitle">กำลังวิเคราะห์...</h3><div id="resultText"></div><p id="resultScore" class="score"></p><p class="mini">ผลนี้เป็นการประเมินจากลักษณะสัญญาณเสียง ไม่ใช่การระบุ “ความหมายของภาษาแมว” แบบวิทยาศาสตร์</p></div>
+    </div>
+  </section>
+  <footer>CatTalk MVP • ทำงานออฟไลน์ในโหมด “ฉัน → แมว”</footer>
+</div>
+<script>
+const tabs=document.querySelectorAll('.tab');tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.getElementById(t.dataset.target).classList.add('active')}));
+let audioCtx;function ctx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
+function tone(start,dur,f1,f2,gain=.035,type='sine'){const c=ctx(),o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f1,c.currentTime+start);o.frequency.exponentialRampToValueAtTime(Math.max(40,f2),c.currentTime+start+dur);g.gain.setValueAtTime(.0001,c.currentTime+start);g.gain.exponentialRampToValueAtTime(gain,c.currentTime+start+.03);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+start+dur);o.connect(g).connect(c.destination);o.start(c.currentTime+start);o.stop(c.currentTime+start+dur+.03)}
+function playCatSignal(kind){ctx().resume();const s=document.getElementById('humanStatus');if(kind==='hello'){tone(0,.28,520,760,.03);tone(.31,.20,700,540,.025);s.textContent='👋 สัญญาณ “สวัสดี” — ใช้เสียงนี้ซ้ำเวลาเข้าไปทักแมว'}if(kind==='come'){tone(0,.24,480,820,.035);tone(.34,.24,500,860,.035);s.textContent='🐾 สัญญาณ “มาหาหน่อย” — ลองกดแล้วเรียกชื่อแมวด้วยน้ำเสียงเดิม'}if(kind==='play'){tone(0,.18,650,980,.03);tone(.24,.14,820,1100,.025);tone(.45,.18,700,1000,.03);s.textContent='🧶 สัญญาณ “มาเล่นกัน” — ควรกดก่อนหยิบของเล่นทุกครั้ง'}if(kind==='calm'){tone(0,.55,430,320,.028);tone(.62,.48,390,300,.023);s.textContent='💗 สัญญาณ “ไม่เป็นไรนะ” — ใช้เบา ๆ และอย่าฝืนเข้าใกล้แมวที่กำลังเครียด'}}
+const listenBtn=document.getElementById('listenBtn'),catStatus=document.getElementById('catStatus'),meterFill=document.getElementById('meterFill'),result=document.getElementById('result');
+listenBtn.addEventListener('click',async()=>{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){catStatus.textContent='เบราว์เซอร์นี้ไม่อนุญาตไมโครโฟนจากหน้านี้ — ลองเปิดผ่าน HTTPS หรือ localhost';return}try{listenBtn.disabled=true;listenBtn.classList.add('listening');listenBtn.textContent='กำลังฟัง...';result.classList.remove('show');const stream=await navigator.mediaDevices.getUserMedia({audio:true}),c=ctx();await c.resume();const source=c.createMediaStreamSource(stream),analyser=c.createAnalyser();analyser.fftSize=2048;source.connect(analyser);const timeData=new Uint8Array(analyser.fftSize),freqData=new Uint8Array(analyser.frequencyBinCount);let rmsSamples=[],peakBins=[],activity=0,frames=0;const start=performance.now();await new Promise(resolve=>{function frame(){analyser.getByteTimeDomainData(timeData);analyser.getByteFrequencyData(freqData);let sum=0;for(let i=0;i<timeData.length;i++){const v=(timeData[i]-128)/128;sum+=v*v}const rms=Math.sqrt(sum/timeData.length);rmsSamples.push(rms);if(rms>.035)activity++;let max=0,idx=0;for(let i=2;i<freqData.length;i++){if(freqData[i]>max){max=freqData[i];idx=i}}peakBins.push(idx);frames++;meterFill.style.width=Math.min(100,rms*500)+'%';if(performance.now()-start<3000)requestAnimationFrame(frame);else resolve()}frame()});stream.getTracks().forEach(t=>t.stop());meterFill.style.width='0%';const avgRms=rmsSamples.reduce((a,b)=>a+b,0)/Math.max(1,rmsSamples.length),avgBin=peakBins.reduce((a,b)=>a+b,0)/Math.max(1,peakBins.length),hz=avgBin*c.sampleRate/analyser.fftSize,activityRatio=activity/Math.max(1,frames);interpret(avgRms,hz,activityRatio)}catch(e){catStatus.textContent='เปิดไมโครโฟนไม่ได้: '+(e.message||'กรุณาตรวจสิทธิ์ไมโครโฟน')}finally{listenBtn.disabled=false;listenBtn.classList.remove('listening');listenBtn.textContent='🎙️ ฟังเสียงแมว'}});
+function interpret(rms,hz,activity){let emoji='🐱',title='เสียงเบา/ข้อมูลไม่พอ',text='ลองให้แมวส่งเสียงใกล้ไมโครโฟนอีกครั้ง',score=45;if(rms<.018){emoji='🤫';title='ค่อนข้างเงียบ';text='จับเสียงเด่นได้ไม่มาก อาจอยู่ไกลไมค์หรือช่วงนี้แมวไม่ได้ร้อง';score=35}else if(hz>700&&activity>.35){emoji='👀';title='อาจกำลังเรียกความสนใจ';text='เสียงค่อนข้างสูงและมีช่วงที่เด่นต่อเนื่อง ลองดูบริบทเพิ่มว่าแมวมองคุณ เดินตาม หรือยืนใกล้อาหาร/ประตูหรือไม่';score=68}else if(hz<350&&rms>.045){emoji='⚠️';title='อาจไม่พอใจหรือเครียด';text='ตรวจพบเสียงค่อนข้างต่ำและเด่น ควรดูหู หาง ท่าทาง และเว้นระยะหากแมวขู่หรือเกร็ง';score=64}else if(activity<.30){emoji='👋';title='อาจเป็นเสียงทักหรือเรียกสั้น ๆ';text='เสียงเป็นช่วงสั้น ๆ มากกว่าต่อเนื่อง ลองตอบกลับด้วยเสียงนุ่มและสังเกตว่าแมวเข้าหาหรือไม่';score=60}else{emoji='💬';title='อาจต้องการบางอย่าง';text='เสียงมีความต่อเนื่องระดับหนึ่ง แต่ความหมายต้องดูสถานการณ์ร่วมด้วย เช่น เวลาอาหาร ของเล่น ประตู หรือการขอความสนใจ';score=58}document.getElementById('resultEmoji').textContent=emoji;document.getElementById('resultTitle').textContent=title;document.getElementById('resultText').textContent=text;document.getElementById('resultScore').textContent='ความมั่นใจแบบคร่าว ๆ: '+score+'%';catStatus.textContent='วิเคราะห์เสร็จแล้ว • ความถี่เด่นประมาณ '+Math.round(hz)+' Hz';result.classList.add('show')}
+if('serviceWorker'in navigator&&location.protocol!=='file:'){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+</script></body></html>
