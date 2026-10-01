@@ -1,0 +1,9 @@
+{
+  "name": "CatTalk — สื่อสารกับแมว",
+  "short_name": "CatTalk",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#111018",
+  "theme_color": "#17141f",
+  "icons": []
+}
